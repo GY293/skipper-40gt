@@ -66,3 +66,21 @@ test('pictures keep their shape and never jump while loading', async () => {
   assert.deepEqual(bad, []);
   await page.ctx.close();
 });
+
+for (const lang of LANGS) {
+  test(`every one of the 848 questions fits a 320 px screen (${lang})`, async () => {
+    const page = await newPage(browser, { device: DEVICES[0] });
+    await openApp(page, srv.url, lang);
+    const bad = await page.evaluate(() => {
+      const out = [];
+      for (const q of Q) {
+        openNumber(q.n);
+        choose(q.c); // answered view: answers, explanation, similar questions, note
+        if (document.documentElement.scrollWidth > document.documentElement.clientWidth + 1) out.push(q.n);
+      }
+      return out;
+    });
+    assert.deepEqual(bad, [], 'questions wider than the screen');
+    await page.ctx.close();
+  });
+}

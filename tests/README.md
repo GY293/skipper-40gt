@@ -10,7 +10,7 @@ when all of them pass.
 | `answers.test.mjs` | All 848 questions mark the official answer as correct, in Bulgarian and English |
 | `english.test.mjs` | No Bulgarian text in the English version, except the intended chart abbreviations |
 | `flows.test.mjs` | Exam, results, history, smart review, flashcards, sections, stars, notes, search, excluded, settings, language, theme, saved data, single file |
-| `layout.test.mjs` | Phone sizes from iPhone SE to Pro Max, landscape and desktop: nothing wider than the screen, buttons big enough to tap |
+| `layout.test.mjs` | Phone sizes from iPhone SE to Pro Max, landscape and desktop: nothing wider than the screen, buttons big enough to tap; every question fits a 320 px screen |
 | `offline.test.mjs` | Installable, works offline with pictures, loading screen (Chromium) |
 
 Run locally:
