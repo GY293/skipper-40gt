@@ -187,6 +187,23 @@ test('practice sections, progress and the exam use the same names in the same or
   }
 });
 
+test('notes are limited to 500 characters, with a counter', async () => {
+  const page = await newPage(browser);
+  await openApp(page, srv.url, 'bg');
+  await page.evaluate(() => openNumber(10));
+  await page.click('.qnote .link');
+  assert.equal(await page.getAttribute('.qnote textarea', 'maxlength'), '500');
+  await page.fill('.qnote textarea', 'x'.repeat(600));
+  await page.locator('.qnote textarea').blur();
+  assert.equal(await page.evaluate(() => store.qnote[10].length), 500);
+  assert.equal(await page.textContent('.notecount'), '500 / 500');
+  // an older, longer note is shortened when loaded
+  await page.evaluate(() => { const s = JSON.parse(localStorage.getItem('kapitan40.v1')); s.qnote = { 11: 'y'.repeat(2000) }; localStorage.setItem('kapitan40.v1', JSON.stringify(s)); });
+  await page.reload(); await page.waitForSelector('.card');
+  assert.equal(await page.evaluate(() => store.qnote[11].length), 500);
+  await page.ctx.close();
+});
+
 test('broken saved data never breaks the page', async () => {
   const page = await newPage(browser);
   for (const bad of ['not json', '{"stats":5,"cfg":null}', '{"session":{"mode":"exam","ids":[99999]}}', '[]', 'null', '{"hist":"x","mem":5,"star":[1]}']) {
