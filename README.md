@@ -25,7 +25,7 @@ Trainer for the "Skipper up to 40 GT" exam – all 848 official questions, in Bu
 След първото отваряне приложението работи и без интернет. Напредъкът се пази само на това устройство.
 
 ### Като един файл
-`index.html` е цялото приложение в един файл. Може да се свали и отвори направо в браузър, без интернет.
+[`captain_40_GT.html`](captain_40_GT.html) е цялото приложение в един файл, с всички картинки вътре. Може да се свали и отвори направо в браузър, без интернет. Сайтът (`index.html`) зарежда картинките отделно, за да се отваря по-бързо.
 
 ### Важно
 Въпросите и отговорите са от официалния файл. Разделите, поясненията и английският превод са добавени и не са официални. Официалният изпит е на български.
@@ -49,7 +49,7 @@ Trainer for the "Skipper up to 40 GT" exam – all 848 official questions, in Bu
 After the first visit the app works offline. Progress is stored only on that device.
 
 ### As a single file
-`index.html` is the whole app in one file. It can be downloaded and opened directly in a browser, offline.
+[`captain_40_GT.html`](captain_40_GT.html) is the whole app in one file, with all pictures inside. It can be downloaded and opened directly in a browser, offline. The website (`index.html`) loads the pictures separately so it opens faster.
 
 ### Note
 The questions and answers are from the official file. The sections, explanations and English translation were added and are not official. The official exam is in Bulgarian.
