@@ -367,6 +367,25 @@ body.hasnav .panel:has(.startbar){padding-bottom:0}
 @media (prefers-reduced-motion:reduce){.spin{animation-duration:2.5s}}
 .plate img{object-fit:contain}
 .plate img[style]{height:auto;max-width:100%}
+.install>h2{font-size:1.25rem}
+.igok,.ignote{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:.95rem}
+.igok{background:var(--stbd-soft);color:var(--ink)}
+.ignote{background:var(--buff);color:var(--ink)}
+.igsite{margin-top:14px;padding:12px;border:1px dashed var(--line);border-radius:10px}
+.igsite>span{display:block;font-size:.8rem;color:var(--muted)}
+.igsite code{display:block;font-size:1rem;font-weight:700;word-break:break-all;margin-top:2px;font-family:ui-monospace,Menlo,Consolas,monospace}
+.igsite .row{margin-top:10px}
+a.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:inherit}
+.igtabs{display:grid;grid-template-columns:repeat(3,1fr);width:100%;margin-top:16px}
+.igtabs button{padding:8px 6px;min-height:46px;font-weight:600}
+.igbody{margin-top:6px}
+.igbody h3{margin-top:18px;font-size:1.02rem}
+.steps{margin:12px 0 0;padding:0;list-style:none;counter-reset:st}
+.steps li{counter-increment:st;position:relative;padding:2px 0 12px 42px;line-height:1.45}
+.steps li::before{content:counter(st);position:absolute;left:0;top:0;width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--paper);font-weight:700;font-size:.9rem;display:flex;align-items:center;justify-content:center}
+.steps li:not(:last-child)::after{content:"";position:absolute;left:13px;top:32px;bottom:2px;width:2px;background:var(--line)}
+.steps li:last-child::before{background:var(--stbd)}
+.install>.note:last-child{margin-top:14px}
 </style>
 </head>
 <body>
@@ -405,7 +424,19 @@ bg:{
   docTitle:'Капитан 40 БТ',zoomAlt:'Увеличена картинка към въпроса',
   title:'Капитан до 40 БТ',
   intro:n=>'Всичките '+n+' официални въпроса на „Морска администрация“ за водач на кораб до 40 БТ, с картинките, верните отговори и кратко пояснение към всеки въпрос. Работи без интернет.',
-  langLabel:'Език',navHome:'Начало',navPractice:'Упражнение',navStats:'Напредък',navFind:'Търси',navMore:'Още',navAria:'Основно меню',
+  langLabel:'Език',igH:'Инсталирай и свали',igP:'Избери устройството си и следвай стъпките. Отнема около минута.',igPc:'Компютър',igAndroid:'Android',igIOS:'iPhone',
+  igSite:'Адрес на приложението',igCopy:'Копирай адреса',igCopied:'Копирано ✓',igOpen:'Отвори',
+  igFileNote:'Сега приложението е отворено като файл. За да го инсталираш, отвори адреса по-долу на устройството, на което искаш да го имаш.',
+  igDone:'Вече работиш в инсталираното приложение. То работи и без интернет.',
+  igSync:'Напредъкът се пази отделно на всяко устройство, както и отделно в браузъра, в инсталираното приложение и в сваления файл.',
+  igPcA:'Вариант 1: инсталирай като приложение (препоръчано)',
+  igPcASteps:['Отвори Google Chrome или Microsoft Edge на компютъра.','Отвори адреса горе (натисни „Отвори“ или го копирай в лентата за адрес горе в браузъра).','Вдясно в лентата за адрес натисни малката икона „Инсталирай“ (екран със стрелка). Ако я няма, натисни менюто горе вдясно (⋮ в Chrome, … в Edge) и потърси „Инсталирай“ или „Приложения → Инсталирай този сайт като приложение“.','Натисни „Инсталирай“ в прозореца, който се отваря.','Готово: „Капитан 40 БТ“ се отваря в свой прозорец и има икона в менюто „Старт“ (Windows) или в „Програми“ (Mac). Работи и без интернет.'],
+  igPcMac:'На Mac със Safari: отвори адреса, после менюто „Файл“ → „Добави в Dock“.',
+  igPcB:'Вариант 2: свали като един файл',
+  igPcBSteps:['Натисни бутона „Свали HTML файла“ отдолу.','Файлът captain_40_GT.html се записва в папка „Изтегляния“ (Downloads).','Отвори го с двоен клик. Отваря се в браузъра и работи без интернет.','Можеш да го копираш на флашка или на друг компютър и да го отвориш и там.'],
+  igAndroidSteps:['Отвори Chrome (кръглата икона в червено, жълто и зелено).','Отвори адреса горе: натисни „Отвори“ или напиши gy293.github.io/skipper-40gt в лентата горе.','Натисни трите точки ⋮ горе вдясно.','Избери „Инсталирай приложението“. Ако го няма, избери „Добави към началния екран“, после „Инсталирай“.','Потвърди с „Инсталирай“.','Готово: иконата „Капитан 40 БТ“ е на началния екран. Отвори я веднъж с интернет, после работи и без.'],
+  igIOSSteps:['Отвори Safari (синята икона с компас). Трябва да е Safari, не Chrome.','Отвори адреса горе: натисни „Отвори“ или напиши gy293.github.io/skipper-40gt в лентата.','Натисни бутона „Сподели“: квадрат със стрелка нагоре. На iPhone е долу (ако не се вижда, докосни долната част на екрана), на iPad е горе вдясно.','В менюто, което се отваря, превърти надолу и избери „Добави към началния екран“.','Натисни „Добави“ горе вдясно.','Готово: иконата „Капитан 40 БТ“ е на началния екран. Отвори я веднъж с интернет, после работи и без.'],
+  igInstallNow:'Инсталирай сега',navHome:'Начало',navPractice:'Упражнение',navStats:'Напредък',navFind:'Търси',navMore:'Още',navAria:'Основно меню',
   tagline:'Всички 848 официални въпроса, с картинки и пояснения. Работи без интернет.',
   examMeta:(N,m,p)=>N+' въпроса · '+m+' мин · '+p+'% за успех',examDist:'Разпределение по теми',
   learnH:'Учи',learnP:'Умният преговор сам избира какво да повториш сега.',bySections:'По раздели',
@@ -478,7 +509,19 @@ en:{
   docTitle:'Skipper 40 GT',zoomAlt:'Enlarged picture for the question',
   title:'Skipper up to 40 GT',
   intro:n=>'All '+n+' official questions of the Bulgarian Maritime Administration for Skipper of a vessel up to 40 GT, with the pictures, the correct answers and a short explanation for each question. Works offline. The English text is an unofficial translation; the official exam is in Bulgarian.',
-  langLabel:'Language',navHome:'Home',navPractice:'Practice',navStats:'Progress',navFind:'Search',navMore:'More',navAria:'Main menu',
+  langLabel:'Language',igH:'Install and download',igP:'Pick your device and follow the steps. It takes about a minute.',igPc:'Computer',igAndroid:'Android',igIOS:'iPhone',
+  igSite:'App address',igCopy:'Copy address',igCopied:'Copied ✓',igOpen:'Open',
+  igFileNote:'The app is open as a file right now. To install it, open the address below on the device where you want it.',
+  igDone:'You are already using the installed app. It also works offline.',
+  igSync:'Progress is stored separately on each device, and separately in the browser, in the installed app and in the downloaded file.',
+  igPcA:'Option 1: install as an app (recommended)',
+  igPcASteps:['Open Google Chrome or Microsoft Edge on the computer.','Open the address above (press "Open", or copy it into the address bar at the top of the browser).','On the right of the address bar, click the small "Install" icon (a screen with an arrow). If it is not there, open the menu at the top right (⋮ in Chrome, … in Edge) and look for "Install" or "Apps → Install this site as an app".','Click "Install" in the window that opens.','Done: "Капитан 40 БТ" opens in its own window and has an icon in the Start menu (Windows) or in Applications (Mac). It also works offline.'],
+  igPcMac:'On a Mac with Safari: open the address, then the "File" menu → "Add to Dock".',
+  igPcB:'Option 2: download as a single file',
+  igPcBSteps:['Click the "Download HTML file" button below.','The file captain_40_GT.html is saved in your Downloads folder.','Double-click it to open. It opens in the browser and works offline.','You can copy it to a USB stick or another computer and open it there too.'],
+  igAndroidSteps:['Open Chrome (the round red, yellow and green icon).','Open the address above: press "Open", or type gy293.github.io/skipper-40gt in the bar at the top.','Tap the three dots ⋮ at the top right.','Choose "Install app". If it is not there, choose "Add to Home screen", then "Install".','Confirm with "Install".','Done: the "Капитан 40 БТ" icon is on your home screen. Open it once with internet; after that it works offline too.'],
+  igIOSSteps:['Open Safari (the blue compass icon). It has to be Safari, not Chrome.','Open the address above: press "Open", or type gy293.github.io/skipper-40gt in the bar.','Tap the Share button: a square with an arrow pointing up. On iPhone it is at the bottom (if you cannot see it, tap the bottom of the screen); on iPad it is at the top right.','In the menu that opens, scroll down and choose "Add to Home Screen".','Tap "Add" at the top right.','Done: the "Капитан 40 БТ" icon is on your home screen. Open it once with internet; after that it works offline too.'],
+  igInstallNow:'Install now',navHome:'Home',navPractice:'Practice',navStats:'Progress',navFind:'Search',navMore:'More',navAria:'Main menu',
   tagline:'All 848 official questions, with pictures and explanations. Works offline.',
   examMeta:(N,m,p)=>N+' questions · '+m+' min · '+p+'% to pass',examDist:'Topic split',
   learnH:'Study',learnP:'Smart review picks what you should repeat now.',bySections:'By section',
@@ -588,7 +631,7 @@ const NOTES_BG=[
 ["Изключване на въпроси","Отметката „Изключи въпроса“ маха въпроса от упражненията и от следващите изпити. Списъкът с изключените се отваря от „Още“. В него може да търсиш, да филтрираш по раздел и да връщаш много въпроси наведнъж."],
 ["Език","Езикът се сменя с бутона EN/БГ горе вдясно, до всеки въпрос или от „Още → Настройки“. Напредъкът и изключените въпроси са общи за двата езика."],
 ["Клавиатура","На компютър: 1–4 или А–Г избират отговор, стрелките сменят въпроса. При картите интервал показва отговора, 1 е „Знаех“, 2 е „Не знаех“."],
-["Приложение","Ако страницата е качена на уеб адрес, може да се инсталира на iPhone и Android като отделно приложение, което работи и без интернет. Вижте „Инсталирай като приложение“ в „Още“."],
+["Приложение","Приложението е на адрес gy293.github.io/skipper-40gt и може да се инсталира на компютър, Android и iPhone като отделно приложение, което работи и без интернет. Стъпките за компютър, Android и iPhone са в „Още → Инсталирай и свали“."],
 ["Напредък","Пази се само в този браузър на това устройство. Изчистването на данните на браузъра го изтрива."]]],
 ["За съдържанието",[
 ["Източник","Въпросите, отговорите и картинките са от файла „Водач на кораб до 40 БТ“ на ИА „Морска администрация“ от 14.01.2016 г. Номерата са същите като във файла."],
@@ -616,7 +659,7 @@ const NOTES_EN=[
 ["Excluding questions","The \"Exclude question\" tick removes a question from practice and from future exams. The list of excluded questions opens from \"More\". There you can search, filter by section and restore many questions at once."],
 ["Language","Switch the language with the БГ/EN button at the top right, next to each question, or in \"More → Settings\". Progress and excluded questions are shared between the two languages."],
 ["Keyboard","On a computer: 1–4 or A–D pick an answer, the arrow keys change the question. In flashcards, space shows the answer, 1 is \"Knew it\", 2 is \"Didn't know\"."],
-["App","If the page is put on a web address, it can be installed on iPhone and Android as a separate app that also works offline. See \"Install as an app\" under \"More\"."],
+["App","The app is at gy293.github.io/skipper-40gt and can be installed on a computer, Android and iPhone as a separate app that also works offline. The steps for computer, Android and iPhone are in \"More → Install and download\"."],
 ["Progress","It is stored only in this browser on this device. Clearing the browser's data deletes it."]]],
 ["About the content",[
 ["Source","The questions, answers and pictures are from the file \"Skipper of a vessel up to 40 GT\" of the Bulgarian Maritime Administration Executive Agency, dated 14.01.2016. The numbers are the same as in the file."],
@@ -725,12 +768,26 @@ function histBlock(){const H=store.hist;const sec=h('section',{class:'panel'},h(
   return sec;}
 let deferredInstall=null;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredInstall=e;if(view==='home')render();});
+const SITE='https://gy293.github.io/skipper-40gt/';
+const DEVICE=(()=>{const u=navigator.userAgent||'';if(/iPhone|iPad|iPod/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1))return 'ios';if(/Android/.test(u))return 'android';return 'pc';})();
+let igTab=DEVICE;
+function steps(list){return h('ol',{class:'steps'},list.map(s=>h('li',null,s)));}
 function installBlock(){const standalone=(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;const web=/^https?:$/.test(location.protocol);
-  const sec=h('section',{class:'block'},h('h2',null,t('instH')));
-  if(standalone){sec.append(h('p',null,t('instDone')));return sec;}
-  if(!web){sec.append(h('p',null,t('instFile')));return sec;}
-  if(deferredInstall)sec.append(h('div',{class:'row'},h('button',{class:'btn primary',onclick:async()=>{const p=deferredInstall;deferredInstall=null;try{p.prompt();await p.userChoice;}catch(e){}render();}},t('instBtn'))));
-  sec.append(h('p',null,t('instIOS')),h('p',null,t('instAndroid')));return sec;}
+  const sec=h('section',{class:'panel install'},h('h2',null,t('igH')),h('p',null,t('igP')));
+  if(standalone)sec.append(h('p',{class:'igok'},t('igDone')));
+  else if(!web)sec.append(h('p',{class:'ignote'},t('igFileNote')));
+  const copy=h('button',{type:'button',class:'btn small'},t('igCopy'));
+  copy.addEventListener('click',()=>{const done=()=>{copy.textContent=t('igCopied');setTimeout(()=>{copy.textContent=t('igCopy');},1800);};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(SITE).then(done,()=>{prompt(t('igSite'),SITE);});else prompt(t('igSite'),SITE);});
+  sec.append(h('div',{class:'igsite'},h('span',null,t('igSite')),h('code',null,SITE.replace(/^https:\/\//,'').replace(/\/$/,'')),h('div',{class:'row'},copy,h('a',{class:'btn small',href:SITE,target:'_blank',rel:'noopener'},t('igOpen')))));
+  sec.append(h('div',{class:'seg igtabs',role:'tablist'},[['pc',t('igPc')],['android',t('igAndroid')],['ios',t('igIOS')]].map(([v,l])=>h('button',{type:'button',role:'tab','aria-selected':String(igTab===v),'aria-pressed':String(igTab===v),onclick:()=>{igTab=v;render();}},l))));
+  const body=h('div',{class:'igbody',role:'tabpanel'});
+  const nowBtn=deferredInstall&&web&&!standalone?h('div',{class:'row'},h('button',{class:'btn primary',onclick:async()=>{const p=deferredInstall;deferredInstall=null;try{p.prompt();await p.userChoice;}catch(e){}render();}},t('igInstallNow'))):null;
+  if(igTab==='pc'){add(body,h('h3',null,t('igPcA')),nowBtn,steps(t('igPcASteps')),h('p',{class:'note'},t('igPcMac')),h('h3',null,t('igPcB')),steps(t('igPcBSteps')),h('div',{class:'row'},h('button',{class:'btn',onclick:downloadSelf},t('dlBtn'))));}
+  else if(igTab==='android'){add(body,nowBtn,steps(t('igAndroidSteps')));}
+  else body.append(steps(t('igIOSSteps')));
+  sec.append(body,h('p',{class:'note'},t('igSync')));
+  return sec;}
 function topBar(){return h('div',{class:'topbar'},h('span',{class:'brand'},t('title')),h('span',{class:'tbtools'},themeBtn(),langBtn()));}
 function pageHead(title,sub){return h('header',{class:'pagehead'},h('h1',null,title),sub?h('p',null,sub):null);}
 function resumeCard(){const s=store.session;if(!s)return null;const done=s.ids.filter(n=>s.ans[n]!=null).length;
@@ -813,8 +870,7 @@ function renderMore(){const c=store.cfg,exN=exCount();
     h('label',{class:'field'},t('sExpl'),h('input',{type:'checkbox',checked:c.showExpl,onchange:e=>{c.showExpl=e.target.checked;save();}})),
     h('p',{class:'note'},t('sNote')),
     h('div',{class:'row'},h('button',{class:'btn quiet',onclick:()=>{if(confirm(t('clearConfirm'))){store.stats={};store.drawn={};store.mem={};store.hist=[];save();render();}}},t('clear'))))));
-  const ib=installBlock();ib.className='panel';app.append(ib);
-  app.append(h('section',{class:'panel'},h('h2',null,t('dlH')),h('p',{class:'note'},t('dlP')),h('div',{class:'row'},h('button',{class:'btn',onclick:downloadSelf},t('dlBtn')))));
+  app.append(installBlock());
   app.append(h('section',{class:'panel'},h('details',{open:notesOpen,ontoggle:e=>{notesOpen=e.target.open;}},h('summary',null,t('notes')),h('div',{class:'notes'},(EN_ON()?NOTES_EN:NOTES_BG).map(([g,items])=>h('section',{class:'notegroup'},h('h3',null,g),h('dl',null,items.map(([x,d])=>[h('dt',null,x),h('dd',null,d)]))))))));
   app.append(h('footer',null,h('p',null,t('intro',Q.length)),h('p',null,t('footer'))));
 }
