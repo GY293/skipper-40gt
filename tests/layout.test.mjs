@@ -10,6 +10,7 @@ after(async () => { await browser.close(); await srv.close(); });
 
 const SCREENS = [
   ['home', p => p.evaluate(() => goTab('home'))],
+  ['home with topic split open', p => p.evaluate(() => { goTab('home'); document.querySelectorAll('details').forEach(d => { d.open = true; }); })],
   ['practice', p => p.evaluate(() => goTab('practice'))],
   ['progress', p => p.evaluate(() => { store.hist = [[Date.now() - 2e8, 60, 45, 85, 3e6], [Date.now(), 60, 53, 85, 3e6]]; goTab('stats'); })],
   ['search', async p => { await p.evaluate(() => goTab('find')); await p.fill('.findinp', 'ко'); }],

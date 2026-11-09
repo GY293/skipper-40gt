@@ -79,7 +79,7 @@ export function overflows(page) {
     // fixed bars do not make the page scroll, so check every visible element's edges too
     for (const e of document.body.querySelectorAll('*')) {
       const r = e.getBoundingClientRect();
-      if (!r.width || !r.height || e.closest('[hidden]') || getComputedStyle(e).visibility === 'hidden') continue;
+      if (!r.width || !r.height || e.closest('[hidden]') || e.closest('details:not([open]) > :not(summary)') || getComputedStyle(e).visibility === 'hidden') continue;
       if (r.right > vw + 1 || r.left < -1) return `${e.tagName.toLowerCase()}.${e.className || ''} sticks out (${Math.round(r.left)}–${Math.round(r.right)} of ${vw})`;
     }
     return false;
@@ -92,7 +92,7 @@ export function smallTargets(page) {
     const out = [];
     document.querySelectorAll('button, input, select, summary, textarea, a.btn, label.extick, label.selall').forEach(e => {
       const r = e.getBoundingClientRect();
-      if (!r.width || !r.height || e.closest('[hidden]')) return;
+      if (!r.width || !r.height || e.closest('[hidden]') || e.closest('details:not([open]) > :not(summary)')) return;
       if (e.type === 'checkbox' && e.closest('label')) return;
       if (e.tagName === 'IMG' || e.closest('.plate')) return;
       if (r.height < 40 || r.width < 40) out.push(`${e.className || e.tagName}: "${(e.textContent || e.getAttribute('aria-label') || '').trim().slice(0, 24)}" ${Math.round(r.width)}x${Math.round(r.height)}`);
