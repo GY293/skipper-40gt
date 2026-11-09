@@ -116,16 +116,16 @@ for (const lang of LANGS) {
     assert.deepEqual(await page.evaluate(() => [458, 459, 460].map(isEx)), [true, true, true]);
     await page.click('.bar .link');
     assert.equal(await view(page), 'find', 'back returns to search');
-    await tab(page, 4);
-    await page.click('.rowlink');
+    await page.click('.rowlink'); // excluded questions are on the search tab
     assert.equal(await view(page), 'excluded');
+    assert.equal(await page.locator('.tabbar .tab[aria-current=page]').count(), 1);
     assert.equal(await page.locator('.exlist li').count(), 3);
     await page.click('.exlist li .btn >> nth=0');
     assert.equal(await page.evaluate(() => exCount()), 2);
     await page.click('.exfoot .btn');
     assert.equal(await page.evaluate(() => exCount()), 0);
     await page.click('.bar .link');
-    assert.equal(await view(page), 'more');
+    assert.equal(await view(page), 'find');
     assert.deepEqual(page.errors, []);
     await page.ctx.close();
   });
