@@ -386,6 +386,11 @@ a.btn{display:inline-flex;align-items:center;justify-content:center;text-decorat
 .steps li:not(:last-child)::after{content:"";position:absolute;left:13px;top:32px;bottom:2px;width:2px;background:var(--line)}
 .steps li:last-child::before{background:var(--stbd)}
 .install>.note:last-child{margin-top:14px}
+.gtoggle{display:inline-flex;align-items:center;gap:10px;background:none;border:0;padding:6px 0;min-height:44px;text-align:left;font-family:var(--serif);font-weight:700;font-size:1.05rem}
+.gtoggle .box{width:24px;height:24px;flex:none;border:2px solid var(--ink);border-radius:5px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:.95rem;line-height:1;color:var(--paper)}
+.gtoggle.on .box,.gtoggle.part .box{background:var(--ink)}
+.gtoggle small{font-family:var(--sans);font-weight:400;font-size:.85rem;color:var(--muted)}
+.group-head{align-items:center}
 </style>
 </head>
 <body>
@@ -398,9 +403,14 @@ const EN={"topics":["Ship's magnetic compasses, courses, bearings","Wind, waves,
 'use strict';
 const Q=DATA.q.map(r=>({n:r[0],t:r[1],q:r[2],a:r[3],c:r[4],img:r[5]||null,aimg:r[6]||null,qe:EN.q[r[0]][0],ae:EN.q[r[0]][1]}));
 const BYN=new Map(Q.map(q=>[q.n,q]));
-const TOPICS_BG=DATA.topics, GROUPS=DATA.groups, TOPICS=TOPICS_BG;
+const TOPICS_BG=DATA.topics, TOPICS=TOPICS_BG;
+/* the official file leaves 19 stability/buoyancy questions without a topic ("Неопределен");
+   the exam counts them under Seamanship, so practice shows them there too */
+const UNCL=DATA.groups.findIndex(g=>g[1].length===1&&TOPICS_BG[g[1][0]]==='Неопределен'), SEA=1;
+const GROUPS=DATA.groups.map(g=>[g[0],g[1].slice()]);if(UNCL>=0){GROUPS[SEA][1].push(...GROUPS[UNCL][1]);GROUPS.splice(UNCL,1);}
+const G_SRC=DATA.groups.map((_,i)=>i).filter(i=>i!==UNCL);
 const GROUP_OF=[];GROUPS.forEach((g,gi)=>g[1].forEach(t=>GROUP_OF[t]=gi));
-const EXAM=[['Правила за предпазване от сблъскване и система IALA „А“ и „Б“',15,[5]],['Корабоводене',20,[0]],['Морско дело',15,[1,2]],['Техническо обслужване',5,[3]],['Морско законодателство',5,[4]]];
+const EXAM=[['Правила за предпазване от сблъскване и система IALA „А“ и „Б“',15,[4]],['Корабоводене',20,[0]],['Морско дело',15,[1]],['Техническо обслужване',5,[2]],['Морско законодателство',5,[3]]];
 const EXAM_EN=['Collision regulations (COLREG) and IALA buoyage systems A and B','Navigation','Seamanship','Technical maintenance','Maritime legislation'];
 const REL_G=[[3, 690], [5, 652], [182, 183], [189, 190], [239, 499, 500, 501, 527], [240, 241, 262, 502, 520, 521], [242, 243, 244, 522, 523], [247, 248, 249, 251], [252, 253, 254, 255, 257, 258, 591, 592], [260, 261, 524, 525, 526], [288, 290], [289, 291], [292, 293], [294, 295], [298, 299], [317, 318], [324, 325, 326], [327, 340], [343, 344], [346, 347, 349, 350, 351], [405, 420], [438, 439], [442, 456, 457], [452, 473, 478], [453, 471, 477], [454, 472], [455, 475], [458, 459, 460], [463, 465], [464, 466], [467, 469], [474, 479], [487, 488], [494, 495], [517, 519], [532, 534], [540, 590], [560, 561], [587, 588]];
 const REL=new Map();REL_G.forEach(g=>g.forEach(n=>REL.set(n,g)));
@@ -593,8 +603,8 @@ en:{
 function t(k,...a){const v=STR[store.lang][k];return typeof v==='function'?v(...a):v;}
 const LETS={bg:['А','Б','В','Г'],en:['A','B','C','D']};
 function LET(i){return LETS[store.lang][i];}
-function tn(i){return EN_ON()?EN.topics[i]:TOPICS_BG[i];}
-function gn(i){return EN_ON()?EN.groups[i]:GROUPS[i][0];}
+function tn(i){if(TOPICS_BG[i]==='Неопределен')return EN_ON()?'Stability and buoyancy':'Устойчивост и плавучест';return EN_ON()?EN.topics[i]:TOPICS_BG[i];}
+function gn(i){return EN_ON()?EN.groups[G_SRC[i]]:GROUPS[i][0];}
 function xn(i){return EN_ON()?EXAM_EN[i]:EXAM[i][0];}
 function qx(q){return EN_ON()?q.qe:q.q;}
 function ax(q,k){return EN_ON()?q.ae[k]:q.a[k];}
@@ -619,7 +629,7 @@ function langBtn(){return h('button',{type:'button',class:'langbtn',lang:EN_ON()
 const NOTES_BG=[
 ["Как се работи",[
 ["Менюто долу","Начало: изпит, умен преговор и кратък напредък. Упражнение: избор на раздели и начин. Напредък: по раздели и история на изпитите. Търси: въпрос по номер или дума. Още: изключени въпроси, настройки, инсталиране, сваляне и това ръководство."],
-["Изпит","60 въпроса за 60 минути, нужни са 85% верни. Въпросите се теглят по теми в процентите от „Разпределение по теми“ в картата „Изпит“. Въпросите от „Неопределен“ влизат към „Морско дело“. Броят, времето и прагът се сменят от „Настройки“. Процентите остават същите, докато в темата има достатъчно неизключени въпроси; ако няма, другите теми получават повече. Верните отговори се виждат чак в резултата. Изборът е случаен, но първо излизат въпросите, които най-рядко са били в предишни изпити, така че всички въпроси от темата минават, преди някой да се повтори."],
+["Изпит","60 въпроса за 60 минути, нужни са 85% верни. Въпросите се теглят по теми в процентите от „Разпределение по теми“ в картата „Изпит“. 19-те въпроса за устойчивост и плавучест, които официалният файл оставя без тема, се броят към „Морско дело“. Броят, времето и прагът се сменят от „Настройки“. Процентите остават същите, докато в темата има достатъчно неизключени въпроси; ако няма, другите теми получават повече. Верните отговори се виждат чак в резултата. Изборът е случаен, но първо излизат въпросите, които най-рядко са били в предишни изпити, така че всички въпроси от темата минават, преди някой да се повтори."],
 ["Упражнение","Верният отговор и пояснението се показват веднага след всеки въпрос. Може да минеш през всички въпроси или само през избрани раздели, поред или разбъркани, и да оставиш само неотговаряните или сгрешените."],
 ["Умен преговор и слаби места","Умният преговор помни как си отговорил на всеки въпрос. Първо дава сгрешените, после тези, на които им е дошло времето (след 1 ден, след 3 дни), после нови. Научените (3 пъти поред вярно) идват на всеки 10 дни. Сгрешен въпрос се връща още веднъж след няколко въпроса. „Слаби места“ дава въпросите, които най-често грешиш, и допълва от разделите, в които се справяш най-зле. Броят е 25."],
 ["Карти","Вместо да избираш от четири отговора, виждаш въпроса, мислиш и натискаш „Покажи отговора“. После отбелязваш „Знаех“ или „Не знаех“. Отбелязаното се брои в напредъка като верен или грешен отговор."],
@@ -635,7 +645,7 @@ const NOTES_BG=[
 ["Напредък","Пази се само в този браузър на това устройство. Изчистването на данните на браузъра го изтрива."]]],
 ["За съдържанието",[
 ["Източник","Въпросите, отговорите и картинките са от файла „Водач на кораб до 40 БТ“ на ИА „Морска администрация“ от 14.01.2016 г. Номерата са същите като във файла."],
-["Раздели","Официалният файл няма раздели. Разделите тук са добавени за удобство. В „Неопределен“ са 19 въпроса за устойчивост и плавучест."],
+["Раздели","Официалният файл няма раздели. Разделите тук са добавени за удобство. 19 въпроса за устойчивост и плавучест са без тема във файла; тук са в „Морско дело“ като „Устойчивост и плавучест“, защото в изпита се броят там."],
 ["Пояснения","Не са от официалния файл и не са проверени от специалист. При законодателството и лоцията често само повтарят отговора."],
 ["Английски превод","Неофициален превод на всичките 848 въпроса, направен за учене. Официалният изпит е на български. Верните отговори се взимат от българския файл, затова са едни и същи на двата езика. Някои картинки имат български надписи (въпроси 705–714 и 823–837). „Морска администрация“ има и отделен официален английски сборник от около 153 въпроса, който е различен."]]],
 ["Проверки и известни проблеми",[
@@ -647,7 +657,7 @@ const NOTES_BG=[
 const NOTES_EN=[
 ["How it works",[
 ["The bottom menu","Home: exam, smart review and a short progress view. Practice: choose sections and mode. Progress: by section and exam history. Search: a question by number or word. More: excluded questions, settings, install, download and this guide."],
-["Exam","60 questions in 60 minutes, 85% correct needed. Questions are drawn by topic using the percentages under \"Topic split\" in the Exam card. \"Unclassified\" questions count towards \"Seamanship\". The number, time and pass mark can be changed in \"Settings\". The percentages stay the same as long as a topic has enough questions that are not excluded; if not, the other topics get more. The correct answers are shown only in the result. The choice is random, but questions that have appeared least often in earlier exams come first, so every question in a topic comes up before any repeats."],
+["Exam","60 questions in 60 minutes, 85% correct needed. Questions are drawn by topic using the percentages under \"Topic split\" in the Exam card. The 19 stability and buoyancy questions that the official file leaves without a topic count towards \"Seamanship\". The number, time and pass mark can be changed in \"Settings\". The percentages stay the same as long as a topic has enough questions that are not excluded; if not, the other topics get more. The correct answers are shown only in the result. The choice is random, but questions that have appeared least often in earlier exams come first, so every question in a topic comes up before any repeats."],
 ["Practice","The correct answer and the explanation appear right after each question. Go through all questions or only selected sections, in order or shuffled, and keep only the unanswered or the wrongly answered ones."],
 ["Smart review and weak spots","Smart review remembers how you answered each question. It gives the ones you got wrong first, then those that are due again (after 1 day, after 3 days), then new ones. Mastered questions (right 3 times in a row) come back every 10 days. A missed question comes back once more a few questions later. \"Weak spots\" gives the questions you get wrong most often and fills up from the sections where you do worst. The size is 25."],
 ["Flashcards","Instead of choosing from four answers, you see the question, think, and tap \"Show answer\". Then you mark \"Knew it\" or \"Didn't know\". This counts in your progress as a right or wrong answer."],
@@ -663,7 +673,7 @@ const NOTES_EN=[
 ["Progress","It is stored only in this browser on this device. Clearing the browser's data deletes it."]]],
 ["About the content",[
 ["Source","The questions, answers and pictures are from the file \"Skipper of a vessel up to 40 GT\" of the Bulgarian Maritime Administration Executive Agency, dated 14.01.2016. The numbers are the same as in the file."],
-["Sections","The official file has no sections. The sections here were added for convenience. \"Unclassified\" holds 19 questions on stability and buoyancy."],
+["Sections","The official file has no sections. The sections here were added for convenience. 19 questions on stability and buoyancy have no topic in the file; here they are under \"Seamanship\" as \"Stability and buoyancy\", because the exam counts them there."],
 ["Explanations","Not from the official file and not checked by a specialist. For legislation and pilotage they often just restate the answer."],
 ["English translation","An unofficial translation of all 848 questions, made for study. The official exam is in Bulgarian. The correct answers come from the Bulgarian file, so they are the same in both languages. Some pictures carry Bulgarian labels (questions 705–714 and 823–837). The Maritime Administration also has a separate official English set of about 153 questions, which is different."]]],
 ["Checks and known issues",[
@@ -825,8 +835,11 @@ function renderPracticePage(){
     h('div',{class:'opt'},h('span',null,t('pmodeLbl')),modeSeg()),
     h('div',{class:'opt'},h('span',null,t('orderLbl')),seg([['seq',t('seq')],['rand',t('rand')]],store.order,v=>{store.order=v;save();render();})),
     h('div',{class:'opt'},h('span',null,t('whichLbl')),seg([['all',t('fAll')],['new',t('fNew')],['wrong',t('fWrong')],['star',t('fStar')+' ('+Object.keys(store.star).length+')']],store.filter,v=>{store.filter=v;save();render();}))));
-  GROUPS.forEach(([,ts],gi)=>{const allOn=ts.every(x=>store.sel.includes(x));
-    pr.append(h('div',{class:'group'},h('div',{class:'group-head'},h('h3',null,gn(gi)),h('button',{class:'link',onclick:()=>{store.sel=allOn?store.sel.filter(x=>!ts.includes(x)):Array.from(new Set(store.sel.concat(ts)));save();render();}},allOn?t('deselAll'):t('selAll'))),
+  GROUPS.forEach(([,ts],gi)=>{const allOn=ts.every(x=>store.sel.includes(x)),some=!allOn&&ts.some(x=>store.sel.includes(x)),toggle=()=>{store.sel=allOn?store.sel.filter(x=>!ts.includes(x)):Array.from(new Set(store.sel.concat(ts)));save();render();};
+    const cnt=ts.reduce((s,ti)=>s+avail(ti),0);
+    pr.append(h('div',{class:'group'},h('div',{class:'group-head'},
+      h('button',{type:'button',class:'gtoggle'+(allOn?' on':some?' part':''),role:'checkbox','aria-checked':allOn?'true':some?'mixed':'false',onclick:toggle},h('span',{class:'box','aria-hidden':'true'},allOn?'✓':some?'–':''),h('span',{class:'gname'},gn(gi)),h('small',null,cnt)),
+      ts.length>1?h('button',{class:'link',onclick:toggle},allOn?t('deselAll'):t('selAll')):null),
       h('div',{class:'chips'},ts.map(ti=>h('button',{class:'chip','aria-pressed':String(store.sel.includes(ti)),onclick:()=>{store.sel=store.sel.includes(ti)?store.sel.filter(x=>x!==ti):store.sel.concat(ti);save();render();}},tn(ti),h('small',null,avail(ti)))))));});
   {const tp=store.sel.length?store.sel:all;const nSm=Math.min(store.cfg.smartN,Q.filter(q=>tp.includes(q.t)&&!isEx(q.n)).length);const wk=weakCount(tp);const nWk=wk?Math.min(store.cfg.smartN,Math.max(wk,Math.min(store.cfg.smartN,Q.filter(q=>tp.includes(q.t)&&!isEx(q.n)&&!mastered(q.n)).length))):0;
    pr.append(h('div',{class:'quick'},h('h3',null,t('quickH')),h('div',{class:'pair'},
