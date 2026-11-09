@@ -35,11 +35,11 @@ test('every screen in English is free of Bulgarian text', async () => {
   const found = {};
   const check = async name => { const c = (await cyrillicOnScreen(page)).filter(s => /[А-Яа-яЁё]/.test(strip(s))); if (c.length) found[name] = c.slice(0, 3); };
   for (const tab of ['home', 'practice', 'stats', 'find', 'more']) {
-    await page.evaluate(t => { settingsOpen = true; notesOpen = true; goTab(t); }, tab);
+    await page.evaluate(t => { settingsOpen = true; notesOpen = true; installOpen = true; goTab(t); }, tab);
     await page.evaluate(() => document.querySelectorAll('details').forEach(d => d.open = true));
     await check(tab);
   }
-  for (const igTabName of ['pc', 'android', 'ios']) { await page.evaluate(v => { igTab = v; goTab('more'); }, igTabName); await check('install ' + igTabName); }
+  for (const igTabName of ['pc', 'android', 'ios']) { await page.evaluate(v => { igTab = v; installOpen = true; goTab('more'); }, igTabName); await check('install ' + igTabName); }
   await page.evaluate(() => { [5, 6].forEach(n => setEx(n, true)); exSel = new Set(); view = 'excluded'; render(); });
   await check('excluded');
   // questions that are Bulgarian on purpose are left out of this exam

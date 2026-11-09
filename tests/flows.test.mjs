@@ -153,6 +153,21 @@ for (const lang of LANGS) {
   });
 }
 
+test('install guide opens and shows steps for computer, Android and iPhone', async () => {
+  for (const lang of LANGS) {
+    const page = await newPage(browser);
+    await openApp(page, srv.url, lang);
+    await page.evaluate(() => goTab('more'));
+    assert.equal(await page.locator('.igdet[open]').count(), 0, 'closed by default');
+    await page.click('.igdet > summary');
+    const counts = [];
+    for (let i = 0; i < 3; i++) { await page.click(`.igtabs button >> nth=${i}`); counts.push([await page.locator('.igsec').count(), await page.locator('.igtips li').count()]); }
+    assert.deepEqual(counts, [[4, 6], [2, 3], [2, 3]]);
+    assert.equal(await page.locator('.igdet[open]').count(), 1, 'stays open while switching tabs');
+    await page.ctx.close();
+  }
+});
+
 test('broken saved data never breaks the page', async () => {
   const page = await newPage(browser);
   for (const bad of ['not json', '{"stats":5,"cfg":null}', '{"session":{"mode":"exam","ids":[99999]}}', '[]', 'null', '{"hist":"x","mem":5,"star":[1]}']) {
