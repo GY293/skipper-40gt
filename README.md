@@ -6,6 +6,10 @@ Trainer for the "Skipper up to 40 GT" exam – all 848 official questions, in Bu
 
 **▶ https://gy293.github.io/skipper-40gt/**
 
+[![Test and publish](https://github.com/GY293/skipper-40gt/actions/workflows/test-and-publish.yml/badge.svg)](https://github.com/GY293/skipper-40gt/actions/workflows/test-and-publish.yml)
+
+Всяка промяна се проверява автоматично; сайтът се обновява само ако всички тестове минат. · Every change is tested automatically; the site updates only when all tests pass. Details: [tests/README.md](tests/README.md)
+
 ---
 
 ## Български

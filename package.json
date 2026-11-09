@@ -1,0 +1,12 @@
+{
+  "name": "skipper-40gt",
+  "private": true,
+  "description": "Automated tests for the Капитан 40 БТ trainer",
+  "scripts": {
+    "test": "node --test --test-concurrency=1 tests/*.test.mjs",
+    "test:webkit": "BROWSER=webkit node --test --test-concurrency=1 tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}
