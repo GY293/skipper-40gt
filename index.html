@@ -422,9 +422,10 @@ const TOPICS_BG=DATA.topics, TOPICS=TOPICS_BG;
    the exam counts them under Seamanship, so practice shows them there too */
 const UNCL=DATA.groups.findIndex(g=>g[1].length===1&&TOPICS_BG[g[1][0]]==='Неопределен'), SEA=1;
 const GROUPS=DATA.groups.map(g=>[g[0],g[1].slice()]);if(UNCL>=0){GROUPS[SEA][1].push(...GROUPS[UNCL][1]);GROUPS.splice(UNCL,1);}
-const G_SRC=DATA.groups.map((_,i)=>i).filter(i=>i!==UNCL);
+/* practice sections = the five exam topics, in the exam's order and with the exam's names */
+{const order=[4,0,1,2,3];const g=order.map(i=>GROUPS[i]);GROUPS.length=0;GROUPS.push(...g);}
 const GROUP_OF=[];GROUPS.forEach((g,gi)=>g[1].forEach(t=>GROUP_OF[t]=gi));
-const EXAM=[['Правила за предпазване от сблъскване и система IALA „А“ и „Б“',15,[4]],['Корабоводене',20,[0]],['Морско дело',15,[1]],['Техническо обслужване',5,[2]],['Морско законодателство',5,[3]]];
+const EXAM=[['Правила за предпазване от сблъскване и система IALA „А“ и „Б“',15,[0]],['Корабоводене',20,[1]],['Морско дело',15,[2]],['Техническо обслужване',5,[3]],['Морско законодателство',5,[4]]];
 const EXAM_EN=['Collision regulations (COLREG) and IALA buoyage systems A and B','Navigation','Seamanship','Technical maintenance','Maritime legislation'];
 const REL_G=[[3, 690], [5, 652], [182, 183], [189, 190], [239, 499, 500, 501, 527], [240, 241, 262, 502, 520, 521], [242, 243, 244, 522, 523], [247, 248, 249, 251], [252, 253, 254, 255, 257, 258, 591, 592], [260, 261, 524, 525, 526], [288, 290], [289, 291], [292, 293], [294, 295], [298, 299], [317, 318], [324, 325, 326], [327, 340], [343, 344], [346, 347, 349, 350, 351], [405, 420], [438, 439], [442, 456, 457], [452, 473, 478], [453, 471, 477], [454, 472], [455, 475], [458, 459, 460], [463, 465], [464, 466], [467, 469], [474, 479], [487, 488], [494, 495], [517, 519], [532, 534], [540, 590], [560, 561], [587, 588]];
 const REL=new Map();REL_G.forEach(g=>g.forEach(n=>REL.set(n,g)));
@@ -643,8 +644,8 @@ en:{
 function t(k,...a){const v=STR[store.lang][k];return typeof v==='function'?v(...a):v;}
 const LETS={bg:['А','Б','В','Г'],en:['A','B','C','D']};
 function LET(i){return LETS[store.lang][i];}
-function tn(i){if(TOPICS_BG[i]==='Неопределен')return EN_ON()?'Stability and buoyancy':'Устойчивост и плавучест';return EN_ON()?EN.topics[i]:TOPICS_BG[i];}
-function gn(i){return EN_ON()?EN.groups[G_SRC[i]]:GROUPS[i][0];}
+function tn(i){const g=GROUPS.findIndex(x=>x[1].length===1&&x[1][0]===i);if(g>=0)return gn(g);if(TOPICS_BG[i]==='Неопределен')return EN_ON()?'Stability and buoyancy':'Устойчивост и плавучест';return EN_ON()?EN.topics[i]:TOPICS_BG[i];}
+function gn(i){return xn(i);}
 function xn(i){return EN_ON()?EXAM_EN[i]:EXAM[i][0];}
 function qx(q){return EN_ON()?q.qe:q.q;}
 function ax(q,k){return EN_ON()?q.ae[k]:q.a[k];}
@@ -691,7 +692,7 @@ const NOTES_BG=[
 ["Проверки и известни проблеми",[
 ["Верни отговори","На 3.10.2026 г. отговорите бяха сверени с официалния файл по три независими начина и при всички 848 въпроса съвпадат. Това значи, че са като във файла, а не че файлът е безгрешен."],
 ["Картинки","Всичките 258 картинки са от официалния файл. Мястото на всяка е проверено и всяка е прегледана спрямо верния отговор. Във въпрос 462 („Мейдей“) самият файл показва картинка на друг сигнал за бедствие."],
-["Давност","Файлът е от 2016 г. Глобите, сроковете и службите в „Законодателство“ може вече да са други. Глобите са в левове, както във файла."],
+["Давност","Файлът е от 2016 г. Глобите, сроковете и службите в „Морско законодателство“ може вече да са други. Глобите са в левове, както във файла."],
 ["Грешки във файла","Въпроси 6 и 653 дават различни часове за един и същ бюлетин за времето. Въпрос 843 дава флаг „M“ като „На борда си имам лекар“, а по действащия Международен сигнален код той значи „Корабът ми е спрян и няма ход“. За изпита ги учи както са отбелязани."],
 ["Въпроси 257 и 567","Във въпрос 257 верният отговор е написан два пъти, затова се приемат и двата. Във въпрос 567 един отговор е само избледняла картинка без текст, както във файла."]]]];
 const NOTES_EN=[
@@ -719,7 +720,7 @@ const NOTES_EN=[
 ["Checks and known issues",[
 ["Correct answers","On 3.10.2026 the answers were checked against the official file in three independent ways, and all 848 match. This means they are as in the file, not that the file is free of errors."],
 ["Pictures","All 258 pictures are from the official file. The position of each was checked, and each was reviewed against the correct answer. In question 462 (\"Mayday\") the file itself shows a picture of a different distress signal."],
-["Age of the file","The file dates from 2016. Fines, deadlines and authorities in \"Legislation\" may have changed. Fines are in leva, as in the file."],
+["Age of the file","The file dates from 2016. Fines, deadlines and authorities in \"Maritime legislation\" may have changed. Fines are in leva, as in the file."],
 ["Errors in the file","Questions 6 and 653 give different times for the same weather bulletin. Question 843 gives flag \"M\" as \"I have a doctor on board\", while in the current International Code of Signals it means \"My vessel is stopped and making no way through the water\". For the exam, learn them as marked."],
 ["Questions 257 and 567","In question 257 the correct answer is written twice, so both copies are accepted. In question 567 one answer is only a faded picture with no text, as in the file."]]]];
 const app=document.getElementById('app'), zoom=document.getElementById('zoom');

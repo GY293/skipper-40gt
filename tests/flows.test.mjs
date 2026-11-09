@@ -73,11 +73,11 @@ for (const lang of LANGS) {
     await openApp(page, srv.url, lang);
     await tab(page, 1);
     assert.equal(await view(page), 'practice');
-    await page.click('.gtoggle >> nth=1'); // whole Seamanship incl. stability questions
+    await page.click('.gtoggle >> nth=2'); // whole Seamanship incl. stability questions
     assert.deepEqual(await page.evaluate(() => store.sel.slice().sort((a, b) => a - b)), [6, 7, 8, 9, 10]);
-    await page.click('.gtoggle >> nth=1');
+    await page.click('.gtoggle >> nth=2');
     assert.deepEqual(await page.evaluate(() => store.sel), []);
-    await page.click('.chip >> nth=2');
+    await page.click('.chip >> nth=3'); // topic 2 (sections follow the exam order: COLREG first)
     await page.click('.startbar .btn.primary');
     assert.equal(await page.evaluate(() => store.session.ids.length), await page.evaluate(() => Q.filter(q => q.t === 2).length));
     await page.evaluate(() => choose(QQ(store.session.ids[0]).c));
@@ -164,6 +164,25 @@ test('install guide opens and shows steps for computer, Android and iPhone', asy
     for (let i = 0; i < 3; i++) { await page.click(`.igtabs button >> nth=${i}`); counts.push([await page.locator('.igsec').count(), await page.locator('.igtips li').count()]); }
     assert.deepEqual(counts, [[4, 6], [2, 3], [2, 3]]);
     assert.equal(await page.locator('.igdet[open]').count(), 1, 'stays open while switching tabs');
+    await page.ctx.close();
+  }
+});
+
+test('practice sections, progress and the exam use the same names in the same order', async () => {
+  for (const lang of LANGS) {
+    const page = await newPage(browser);
+    await openApp(page, srv.url, lang);
+    const examNames = await page.evaluate(() => EXAM.map((_, i) => xn(i)));
+    await page.evaluate(() => goTab('home'));
+    const homeTable = await page.$$eval('#examdist tr td:first-child', tds => tds.map(td => td.textContent));
+    await page.evaluate(() => goTab('practice'));
+    const practice = await page.$$eval('.gtoggle .gname', e => e.map(x => x.textContent));
+    await page.evaluate(() => goTab('stats'));
+    const progress = await page.$$eval('.sectbl tbody tr td:first-child', tds => tds.map(td => td.firstChild.textContent));
+    assert.deepEqual(homeTable, examNames);
+    assert.deepEqual(practice, examNames);
+    assert.deepEqual(progress, examNames);
+    assert.deepEqual(await page.evaluate(() => EXAM.map((c, i) => c[2][0] === i)), [true, true, true, true, true]);
     await page.ctx.close();
   }
 });
